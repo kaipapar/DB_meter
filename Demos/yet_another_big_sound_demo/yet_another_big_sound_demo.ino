@@ -1,11 +1,15 @@
+#define LED_BUILTIN 2
 // Declaration and initialization of input pins
-int Analog_Input = A0; // Analog output of the sensor
+int Analog_Input = 1; // Analog output of the sensor
 int Digital_Input = 3; // Digital output of the sensor
+int Led_Output = 4;
   
 void setup  ( )
 {
-  pinMode (Analog_In, INPUT);
+  pinMode (Analog_Input, INPUT);
   pinMode (Digital_Input, INPUT);
+  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(Led_Output, OUTPUT);
        
   Serial.begin (9600) ;  //  Serial output with 9600 bps
 }
@@ -14,25 +18,57 @@ void setup  ( )
 // and outputs it on the serial output
 void loop  ( )
 {
-  float  Analogous;
+  const int sampleWindow = 50;
+  float  Analog;
+  float Analog_as_voltage;
   int Digital;
-    
-  //Current values are read out, converted to the voltage value...
-  Analog =  analogRead (Analog_In)   *  (5.0 / 1023.0); 
-  Digital = digitalRead (Digital_Input) ;
-    
-  //...  and issued at this point
-  Serial.print  ("Analog voltage value:");  Serial.print (Analog,  4) ;   Serial.print  ("V, ");
-  Serial.print ("Limit value:") ;
-  
-  if  (Digital==1) 
+
+  unsigned long startMillis = millis();                  
+  float peakToPeak = 0;                                  
+  unsigned int signalMax = 0;                            
+  unsigned int signalMin = 1024;                  
+    //Current values are read out, converted to the voltage value...
+  Analog =  analogRead (Analog_Input);//   *  (5.0 / 1023.0); 
+  Analog_as_voltage = Analog *  (3.3 / 1023.0);
+  Digital = digitalRead (Digital_Input);       
+  // collect data for 50 mS
+  while (millis() - startMillis < sampleWindow)
   {
-      Serial.println (“reached”);
+    if (Analog < 1024)                                  
+    {
+      if (Analog > signalMax)
+      {
+       signalMax = Analog;                          
+      }
+      else if (Analog < signalMin)
+      {
+        signalMin = Analog;                           
+      }
+    }
+  }
+  peakToPeak = signalMax - signalMin;         
+  int db = map(peakToPeak, 0, 900, 49, 90);         
+  Serial.print("sig min");Serial.print(signalMin);
+  Serial.print("sig max"); Serial.print(signalMax);
+  //...  and issued at this point
+  Serial.print  ("Analog voltage value:");  Serial.print (Analog_as_voltage,  4) ;   Serial.print  ("V, ");
+  Serial.print("DB: "); Serial.print(db,1);  
+  Serial.print ("Limit value:");
+
+  if  (Digital == 1) 
+  {
+      Serial.println ("reached");
+      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(Led_Output, HIGH);
+
   }
   else
   {
       Serial.println (" not yet reached");
+      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(Led_Output, LOW);
+
   }
   Serial.println  ( " ----------------------------------------------------------------") ;
-  delay (200) ;
+  delay (1000) ;
 }
