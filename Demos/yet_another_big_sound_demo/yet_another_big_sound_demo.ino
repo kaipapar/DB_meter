@@ -3,7 +3,9 @@
 int Analog_Input = 1; // Analog output of the sensor
 int Digital_Input = 3; // Digital output of the sensor
 int Led_Output = 4;
-  
+const int sampleWindow =50;
+unsigned int sample;
+
 void setup  ( )
 {
   pinMode (Analog_Input, INPUT);
@@ -11,14 +13,13 @@ void setup  ( )
   pinMode(LED_BUILTIN, OUTPUT);
   pinMode(Led_Output, OUTPUT);
        
-  Serial.begin (9600) ;  //  Serial output with 9600 bps
+  Serial.begin (115200) ;  //  Serial output with 9600 bps
 }
   
 //  The program reads the current values of the input pins
 // and outputs it on the serial output
 void loop  ( )
 {
-  const int sampleWindow = 50;
   float  Analog;
   float Analog_as_voltage;
   int Digital;
@@ -30,26 +31,29 @@ void loop  ( )
     //Current values are read out, converted to the voltage value...
   Analog =  analogRead (Analog_Input);//   *  (5.0 / 1023.0); 
   Analog_as_voltage = Analog *  (3.3 / 1023.0);
-  Digital = digitalRead (Digital_Input);       
+  Digital = digitalRead (Digital_Input);   
+
   // collect data for 50 mS
   while (millis() - startMillis < sampleWindow)
   {
-    if (Analog < 1024)                                  
+    sample = analogRead(Analog_Input);
+    if (sample < 1024)                                  
     {
-      if (Analog > signalMax)
+      if (sample > signalMax)
       {
-       signalMax = Analog;                          
+       signalMax = sample;
       }
-      else if (Analog < signalMin)
+      else if (sample < signalMin)
       {
-        signalMin = Analog;                           
+        signalMin = sample;                           
       }
     }
-  }
+  }  
   peakToPeak = signalMax - signalMin;         
   int db = map(peakToPeak, 0, 900, 49, 90);         
   Serial.print("sig min");Serial.print(signalMin);
   Serial.print("sig max"); Serial.print(signalMax);
+  Serial.print("Current analog sample: "); Serial.print(Analog);
   //...  and issued at this point
   Serial.print  ("Analog voltage value:");  Serial.print (Analog_as_voltage,  4) ;   Serial.print  ("V, ");
   Serial.print("DB: "); Serial.print(db,1);  
@@ -70,5 +74,5 @@ void loop  ( )
 
   }
   Serial.println  ( " ----------------------------------------------------------------") ;
-  delay (1000) ;
+  delay (200) ;
 }
