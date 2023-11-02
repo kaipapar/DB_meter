@@ -3,8 +3,8 @@
 int Analog_Input = 1; // Analog output of the sensor
 int Digital_Input = 3; // Digital output of the sensor
 int LedG_Output = 42;
-int LedY_Output = 43;
-int LedR_Output = 44;
+int LedY_Output = 41;
+int LedR_Output = 40;
 const int sampleWindow = 50;
 unsigned int sample;
 
@@ -79,7 +79,17 @@ void loop  ( )
       digitalWrite(LED_BUILTIN, LOW);
 
   }
+  /*
+  digitalWrite(LedG_Output, LOW);
+  digitalWrite(LedY_Output, LOW);
+  digitalWrite(LedR_Output, LOW);
+  delay(50);
+  digitalWrite(LedG_Output, 1);
+  digitalWrite(LedY_Output, 1);
+  digitalWrite(LedR_Output, 1);*/
+
   Serial.println  ( " ----------------------------------------------------------------") ;
+
   if (db <= 50) {
     digitalWrite(LedG_Output, HIGH);
     digitalWrite(LedY_Output, LOW);
@@ -100,5 +110,6 @@ void loop  ( )
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, LOW);
   }
+
   delay (200) ;
 }
