@@ -80,18 +80,23 @@ void loop  ( )
 
   }
   Serial.println  ( " ----------------------------------------------------------------") ;
-  else if (db > 60 && db < 85) {
+  if (db <= 50) {
+    digitalWrite(LedG_Output, HIGH);
+    digitalWrite(LedY_Output, LOW);
+    digitalWrite(LedR_Output, LOW);
+  }
+  else if (db > 55 && db < 65) {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, HIGH);
     digitalWrite(LedR_Output, LOW);
   }
-  else if (db >= 85 && db <= 90) {
+  else if (db >= 65 && db <= 90) {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, HIGH);
   }
   else {
-    digitalWrite(LedG_Output, HIGH);
+    digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, LOW);
   }
