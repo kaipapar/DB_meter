@@ -84,21 +84,25 @@ void loop  ( )
     digitalWrite(LedG_Output, HIGH);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, LOW);
+    Serial.println("It is quiet")
   }
   else if (db > 55 && db < 65) {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, HIGH);
     digitalWrite(LedR_Output, LOW);
+    Serial.println("It is NOT quiet")
   }
   else if (db >= 65 && db <= 90) {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, HIGH);
+    Serial.println("It is loud")
   }
   else {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, LOW);
+    Serial.println("No sound detected")
   }
   delay (200) ;
 }
