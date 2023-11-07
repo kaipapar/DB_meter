@@ -2,11 +2,14 @@
 // Declaration and initialization of input pins
 int Analog_Input = 1; // Analog output of the sensor
 int Digital_Input = 3; // Digital output of the sensor
+float input_voltage = 3.3;
 int LedG_Output = 42;
 int LedY_Output = 41;
 int LedR_Output = 40;
 const int sampleWindow = 50;
 unsigned int sample;
+unsigned int counter = 0;                  
+const int max_loops = 200; 
 
 // Setup the pins to use
 void setup  ( )
@@ -21,7 +24,7 @@ void setup  ( )
   digitalWrite(LedY_Output, LOW);
   digitalWrite(LedR_Output, LOW);
        
-  Serial.begin (115200) ;  //  Serial output with 9600 bps
+  Serial.begin (115200);
 }
   
 //  The program reads the current values of the input pins
@@ -34,25 +37,21 @@ void loop  ( )
   unsigned long startMillis = millis();                  
   float peakToPeak = 0;                                  
   unsigned int signalMax = 0;                            
-  unsigned int signalMin = 1024;                  
+  unsigned int signalMin = 1024;
   
   //Current values are read out, converted to the voltage value...
-  Analog =  analogRead(Analog_Input);//   *  (5.0 / 1023.0); 
-  Analog_as_voltage = Analog * (3.3 / 1023.0);
+  Analog =  analogRead(Analog_Input);
+  Analog_as_voltage = Analog * (input_voltage / 1023.0);
   Digital = digitalRead(Digital_Input);   
 
   // collect data for 50 mS
-  while (millis() - startMillis < sampleWindow)
-  {
+  while (millis() - startMillis < sampleWindow){
     sample = analogRead(Analog_Input);
-    if (sample < 1024)                                  
-    {
-      if (sample > signalMax)
-      {
+    if (sample < 1024){
+      if (sample > signalMax){
        signalMax = sample;
       }
-      else if (sample < signalMin)
-      {
+      else if (sample < signalMin){
         signalMin = sample;                           
       }
     }
@@ -63,7 +62,7 @@ void loop  ( )
   Serial.print("sig max"); Serial.print(signalMax);
   Serial.print("Current analog sample: "); Serial.print(Analog);
 
-  Serial.print  ("Analog voltage value:");  Serial.print (Analog_as_voltage,  4) ;   Serial.print  ("V, ");
+  Serial.print("Analog voltage value: "); Serial.print(Analog_as_voltage, 4); Serial.print("V, ");
   Serial.print("DB: "); Serial.print(db,1);  
   Serial.print ("Limit value:");
 
@@ -114,6 +113,23 @@ void loop  ( )
     digitalWrite(LedR_Output, LOW);
     Serial.println("No sound detected")
   }
+  write(db);
+  //delay (200);
+  counter++;
+  if (counter >= maxLoops){
+    return;
+  }
+}
 
-  delay (200) ;
+// write the data 
+void write(int data_point)
+{
+  FILE *filePointer = NULL;
+  filePointer = fopen("sound_data.csv", "a") //a for appending data
+  if (filePointer == NULL){
+    Serial.println("Failed to open file");
+    exit(1);
+  }
+  fprintf(filePointer, "%d,\n", data_point);
+  fclose(filePointer);
 }
