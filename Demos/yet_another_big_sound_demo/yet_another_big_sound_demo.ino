@@ -37,6 +37,8 @@ void setup  ( )
   Serial.print("sig min: ");Serial.print("sig max: ");Serial.print("A_sample: ");Serial.print("A_vol: ");Serial.print("DB: ");
   Serial.print("\n");
 
+  // Initialize the Wire library and join the I2C bus as a master
+  Wire.begin();
   // Initialize the LCD display
   lcd.init();
   // Turn on the LCD backlight.
