@@ -1,0 +1,5 @@
+## PuTTY session config
+Session: Serial, COM[x], Baud: 115200
+Logging: All session output, Log file name: browse and set to a findable location, Ask the user every time
+Session: Saved sessions: DB_sensor, SAVE, double click DB_sensor
+Et voila!
