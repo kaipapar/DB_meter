@@ -9,7 +9,7 @@ int LedR_Output = 40;
 const int sampleWindow = 50;
 unsigned int sample;
 unsigned int counter = 0;                  
-const int max_loops = 200; 
+const int max_loops = 10; 
 
 // Setup the pins to use
 void setup  ( )
@@ -25,6 +25,8 @@ void setup  ( )
   digitalWrite(LedR_Output, LOW);
        
   Serial.begin (115200);
+  Serial.print("sig min: ");Serial.print("sig max: ");Serial.print("A_sample: ");Serial.print("A_vol: ");Serial.print("DB: ");
+  Serial.print("\n");
 }
   
 //  The program reads the current values of the input pins
@@ -58,27 +60,28 @@ void loop  ( )
   }  
   peakToPeak = signalMax - signalMin;         
   int db = map(peakToPeak, 0, 900, 49, 90);         
-  Serial.print("sig min");Serial.print(signalMin);
-  Serial.print("sig max"); Serial.print(signalMax);
-  Serial.print("Current analog sample: "); Serial.print(Analog);
-
-  Serial.print("Analog voltage value: "); Serial.print(Analog_as_voltage, 4); Serial.print("V, ");
-  Serial.print("DB: "); Serial.print(db,1);  
+  Serial.print(signalMin); Serial.print("\t");
+  Serial.print(signalMax); Serial.print("\t");
+  Serial.print(Analog); Serial.print("\t");
+  Serial.print(Analog_as_voltage, 4); Serial.print("\t"); 
+  Serial.print(db,1); // output in decimal
+  Serial.print("\n");
+  
+  // What we need for matlab
+  
+  
+  /*
   Serial.print ("Limit value:");
-
-  if  (Digital == 1) 
-  {
+  if  (Digital == 1) {
       Serial.println ("reached");
       digitalWrite(LED_BUILTIN, HIGH);
-
   }
-  else
-  {
+  else{
       Serial.println (" not yet reached");
       digitalWrite(LED_BUILTIN, LOW);
+  }*/
 
-  }
-  /*
+  /* For degubbing leds
   digitalWrite(LedG_Output, LOW);
   digitalWrite(LedY_Output, LOW);
   digitalWrite(LedR_Output, LOW);
@@ -87,49 +90,56 @@ void loop  ( )
   digitalWrite(LedY_Output, 1);
   digitalWrite(LedR_Output, 1);*/
 
-  Serial.println  ( " ----------------------------------------------------------------") ;
+  //Serial.println  ( " ----------------------------------------------------------------") ;
 
   if (db <= 50) {
     digitalWrite(LedG_Output, HIGH);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, LOW);
-    Serial.println("It is quiet")
+    //Serial.println("It is quiet");
   }
   else if (db > 55 && db < 65) {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, HIGH);
     digitalWrite(LedR_Output, LOW);
-    Serial.println("It is NOT quiet")
+    //Serial.println("It is NOT quiet");
   }
   else if (db >= 65 && db <= 90) {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, HIGH);
-    Serial.println("It is loud")
+    //Serial.println("It is loud");
   }
   else {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, LOW);
-    Serial.println("No sound detected")
+    //Serial.println("No sound detected");
   }
-  write(db);
+  //write(db);
   //delay (200);
+  /*
   counter++;
-  if (counter >= maxLoops){
-    return;
-  }
+  if (counter >= max_loops){
+    Serial.println("break");
+  }*/
+  delay(100);
 }
-
+/*
 // write the data 
 void write(int data_point)
 {
   FILE *filePointer = NULL;
-  filePointer = fopen("sound_data.csv", "a") //a for appending data
+  filePointer = fopen("sound_data.csv", "a"); //a for appending data
   if (filePointer == NULL){
-    Serial.println("Failed to open file");
-    exit(1);
+    filePointer = fopen("sound_data.csv", "w");
+    if (filePointer == NULL){
+        Serial.println("Failed to create file");
+        exit(1);
+    } else {
+        Serial.println("New file created");
+    }
   }
   fprintf(filePointer, "%d,\n", data_point);
   fclose(filePointer);
-}
+}*/
