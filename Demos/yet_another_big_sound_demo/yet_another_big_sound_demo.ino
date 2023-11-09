@@ -2,7 +2,6 @@
 
 //Libraries in use:
 //For LCD display:
-#include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
 // Declaration and initialization of input pins
@@ -37,14 +36,11 @@ void setup  ( )
   Serial.print("sig min: ");Serial.print("sig max: ");Serial.print("A_sample: ");Serial.print("A_vol: ");Serial.print("DB: ");
   Serial.print("\n");
 
-  // Initialize the Wire library and join the I2C bus as a master
-  Wire.begin();
   // Initialize the LCD display
   lcd.init();
-  // Turn on the LCD backlight.
   lcd.backlight();
-  // Print a message to the LCD.
-  lcd.print("Hello, World!");
+  
+
 }
   
 //  The program reads the current values of the input pins
@@ -85,38 +81,15 @@ void loop  ( )
   Serial.print(db,1); // output in decimal
   Serial.print("\n");
 
-  //LCD screen functions
-  lcd.setCursor(0, 1); // Set the cursor to the second line
+  //LCD screen functions  
+  // Print a message to the LCD.
+  lcd.setCursor(0,0);
   lcd.print("Noise(dB): ");
-  lcd.print(db); // Assuming 'soundSensorValue' is a variable holding the sensor reading
-}
+  // Set the cursor to the second line
+  lcd.setCursor(0,1);
+  lcd.print(db); 
   
-  // What we need for matlab
-  
-  
-  /*
-  Serial.print ("Limit value:");
-  if  (Digital == 1) {
-      Serial.println ("reached");
-      digitalWrite(LED_BUILTIN, HIGH);
-  }
-  else{
-      Serial.println (" not yet reached");
-      digitalWrite(LED_BUILTIN, LOW);
-  }*/
-
-  /* For degubbing leds
-  digitalWrite(LedG_Output, LOW);
-  digitalWrite(LedY_Output, LOW);
-  digitalWrite(LedR_Output, LOW);
-  delay(50);
-  digitalWrite(LedG_Output, 1);
-  digitalWrite(LedY_Output, 1);
-  digitalWrite(LedR_Output, 1);*/
-
-  //Serial.println  ( " ----------------------------------------------------------------") ;
-
-  if (db <= 50) {
+  if (db <= 55) {
     digitalWrite(LedG_Output, HIGH);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, LOW);
@@ -140,30 +113,5 @@ void loop  ( )
     digitalWrite(LedR_Output, LOW);
     //Serial.println("No sound detected");
   }
-  //write(db);
-  //delay (200);
-  /*
-  counter++;
-  if (counter >= max_loops){
-    Serial.println("break");
-  }*/
   delay(100);
 }
-/*
-// write the data 
-void write(int data_point)
-{
-  FILE *filePointer = NULL;
-  filePointer = fopen("sound_data.csv", "a"); //a for appending data
-  if (filePointer == NULL){
-    filePointer = fopen("sound_data.csv", "w");
-    if (filePointer == NULL){
-        Serial.println("Failed to create file");
-        exit(1);
-    } else {
-        Serial.println("New file created");
-    }
-  }
-  fprintf(filePointer, "%d,\n", data_point);
-  fclose(filePointer);
-}*/
