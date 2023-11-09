@@ -1,4 +1,10 @@
 #define LED_BUILTIN 2
+
+//Libraries in use:
+//For LCD display:
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
 // Declaration and initialization of input pins
 int Analog_Input = 1; // Analog output of the sensor
 int Digital_Input = 3; // Digital output of the sensor
@@ -10,6 +16,9 @@ const int sampleWindow = 50;
 unsigned int sample;
 unsigned int counter = 0;                  
 const int max_loops = 10; 
+
+// Set the LCD I2C address and size (16 characters and 2 lines)
+LiquidCrystal_I2C lcd(0x27, 16, 2);
 
 // Setup the pins to use
 void setup  ( )
@@ -27,6 +36,13 @@ void setup  ( )
   Serial.begin (115200);
   Serial.print("sig min: ");Serial.print("sig max: ");Serial.print("A_sample: ");Serial.print("A_vol: ");Serial.print("DB: ");
   Serial.print("\n");
+
+  // Initialize the LCD display
+  lcd.init();
+  // Turn on the LCD backlight.
+  lcd.backlight();
+  // Print a message to the LCD.
+  lcd.print("Hello, World!");
 }
   
 //  The program reads the current values of the input pins
@@ -66,6 +82,12 @@ void loop  ( )
   Serial.print(Analog_as_voltage, 4); Serial.print("\t"); 
   Serial.print(db,1); // output in decimal
   Serial.print("\n");
+
+  //LCD screen functions
+  lcd.setCursor(0, 1); // Set the cursor to the second line
+  lcd.print("Noise(dB): ");
+  lcd.print(db); // Assuming 'soundSensorValue' is a variable holding the sensor reading
+}
   
   // What we need for matlab
   
