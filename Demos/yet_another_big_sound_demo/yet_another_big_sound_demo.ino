@@ -38,7 +38,7 @@ void setup  ( )
   Serial.print("\n");
 
   // Initialize the Wire library and join the I2C bus as a master
-  Wire.begin();
+  Wire.begin(8, 9); // SDA on GPIO 8 and SCL on GPIO 9
   // Initialize the LCD display
   lcd.init();
   // Turn on the LCD backlight.
@@ -89,7 +89,7 @@ void loop  ( )
   lcd.setCursor(0, 1); // Set the cursor to the second line
   lcd.print("Noise(dB): ");
   lcd.print(db); // Assuming 'soundSensorValue' is a variable holding the sensor reading
-}
+
   
   // What we need for matlab
   
