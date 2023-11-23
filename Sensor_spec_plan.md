@@ -40,3 +40,28 @@ KY-038 dB sensitivity is 49db to 90db
 		1. try to push the microcontroller?
 		2. see what kind of sample rate can be achieved without siming error?
 8. Summary of learning achievements
+
+Plan for testing:
+Test report for noise sensor device:
+Equipment used for reference:
+Äänimittari decibel meter android app by Splend Apps for comparing db values and for calibration.
+Frequency Sound Generator android app by LuxDeLux for noise signal generation.
+1.	Accuracy & Calibration Test:
+•	Compare the decibel readings from your device with a known, calibrated sound level meter. Test at various sound levels to ensure accuracy across the device's entire range. 
+•	Verify that the device can be correctly calibrated using a known sound source. This might involve adjusting settings or using reference equipment.
+2.	Repeatability Test:
+•	Verify that the device can measure the same signal the same way a multiple times.
+3.	Range & Frequency Response Test:
+•	Determine the effective range of sound levels that the device can accurately measure. Test the lower and upper limits of its measurement capability.
+•	Check how well the device responds to different frequencies. Sound meters can have varying sensitivity to different frequency ranges.
+4.	Environmental & Interference Test:
+•	Assess how environmental factors like temperature, humidity, and atmospheric pressure affect the device’s performance.
+•	Determine how external electromagnetic fields or other electronic devices affect the device’s accuracy and functionality.
+5.	Response Time Test:
+•	Measure how quickly the device reacts to changes in sound levels. This is important for dynamic environments where sound levels change rapidly.
+6.	(Long-Term Stability Test):
+•	Operate the device over an extended period to check for any drift in readings or degradation in performance.
+7.	(Power Consumption Test):
+•	Measure how much power the device consumes during operation and in standby mode. 
+
+
