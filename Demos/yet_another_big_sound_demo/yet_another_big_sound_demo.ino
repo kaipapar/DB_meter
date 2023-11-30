@@ -7,7 +7,7 @@
 // Declaration and initialization of input pins
 int Analog_Input = 1; // Analog output of the sensor
 int Digital_Input = 3; // Digital output of the sensor
-float input_voltage = 3.3;
+float input_voltage = 5; //change to 3.3
 int LedG_Output = 42;
 int LedY_Output = 41;
 int LedR_Output = 40;
