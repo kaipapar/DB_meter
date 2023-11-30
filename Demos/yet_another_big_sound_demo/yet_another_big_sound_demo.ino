@@ -33,7 +33,7 @@ void setup  ( )
   digitalWrite(LedR_Output, LOW);
        
   Serial.begin (115200);
-  Serial.print("sig min: ");Serial.print("sig max: ");Serial.print("A_sample: ");Serial.print("A_vol: ");Serial.print("DB: ");
+  Serial.print("sig min: \t");Serial.print("sig max: \t");Serial.print("A_sample: \t");Serial.print("A_vol: \t");Serial.print("DB: \t");
   Serial.print("\n");
 
   // Initialize the LCD display
@@ -74,10 +74,10 @@ void loop  ( )
   }  
   peakToPeak = signalMax - signalMin;         
   int db = map(peakToPeak, 0, 900, 49, 90);         
-  Serial.print(signalMin); Serial.print("\t");
-  Serial.print(signalMax); Serial.print("\t");
-  Serial.print(Analog); Serial.print("\t");
-  Serial.print(Analog_as_voltage, 4); Serial.print("\t"); 
+  Serial.print(signalMin); Serial.print("\t \t");
+  Serial.print(signalMax); Serial.print("\t \t");
+  Serial.print(Analog); Serial.print("\t \t");
+  Serial.print(Analog_as_voltage, 4); Serial.print("\t \t"); 
   Serial.print(db,1); // output in decimal
   Serial.print("\n");
 
@@ -99,13 +99,18 @@ void loop  ( )
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, HIGH);
     digitalWrite(LedR_Output, LOW);
+    delay(500);
     //Serial.println("It is NOT quiet");
   }
   else if (db >= 65 && db <= 90) {
     digitalWrite(LedG_Output, LOW);
     digitalWrite(LedY_Output, LOW);
     digitalWrite(LedR_Output, HIGH);
-    //Serial.println("It is loud");
+    Serial.println("\n");
+    Serial.println("It is loud! Noise: ");
+    Serial.println(db);
+    Serial.println("\n");
+    delay(1000);
   }
   else {
     digitalWrite(LedG_Output, LOW);
